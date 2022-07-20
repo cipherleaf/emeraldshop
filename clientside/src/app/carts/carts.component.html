@@ -1,0 +1,33 @@
+<h5 id="cart">MY CART</h5>
+
+	
+  	<!-- Content from the cart -->
+    <div class="col-md-12 my-1 px-1" *ngFor="let cart of carts">
+
+    	<div class="card shadow-0 border border-success">
+
+				<div class="card-body p-2">
+					<div class="row align-items-center">
+						<div class="col-2">
+							<img src="{{cart.imglinks}}" height="75" width="75">
+						</div>
+
+						<div class="col-6">
+							<p class="m-2">{{cart.name}}</p>
+						</div>
+
+						<div class="col-2">
+							<p class="m-2 text-success fs-5 text-right">₱ {{cart.price}}</p>
+						</div>
+
+						<div class="col-2">
+							<div class="d-flex justify-content-between">
+								<p class="text-truncate m-2">{{cart.quantity}}</p>
+								<button class="btn btn-danger btn-floating bi bi-trash" (click)="deleteCart(cart)"></button>
+							</div>
+						</div>
+
+					</div>
+				</div>
+		</div>
+    </div>

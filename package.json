@@ -1,0 +1,19 @@
+{
+  "name": "emeraldshop",
+  "version": "1.0.0",
+  "description": "a simple product shop with adding to cart",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "mark joseph caisip",
+  "license": "ISC",
+  "dependencies": {
+    "@angular/cli": "^14.0.6",
+    "body-parse": "^0.1.0",
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "mongoose": "^6.4.4"
+  }
+}
