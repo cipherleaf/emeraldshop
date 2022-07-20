@@ -7,7 +7,7 @@
 
 4. Run the mongoshell or MongoDB Compass to import the collections.
 
-    _First create a database name `emeraldshop`. Then import the two collections which is save as `json` files. `products` and `productcarts`. The json files were included in the zip file._
+    _First create a database name `emeraldshop`. Then import the two collections which is save as `json` files. `products` and `productcarts`. The json files were located in the json folder on the project root directory._
 
 5. Navigate inside emeraldshop folder
 

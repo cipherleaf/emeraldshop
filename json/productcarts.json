@@ -1,0 +1,28 @@
+[{
+  "_id": {
+    "$oid": "62d0d9dc742b5820fe8249b3"
+  },
+  "name": "BRANDED Overrun T-Shirt",
+  "quantity": 43,
+  "price": 62.42,
+  "imglinks": "https://lzd-img-global.slatic.net/g/p/b8f75ec9e9e0dde4021b7d1b049083af.jpg_720x720q80.jpg_.webp",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62d0df41742b5820fe824ac8"
+  },
+  "name": "Lipstick Matte Corea",
+  "quantity": 10,
+  "price": 79,
+  "imglinks": "https://www.byrdie.com/thmb/buDpZT3AW7c127zaafX1fCxOXck=/1000x1000/smart/filters:no_upscale()/Charlotte-Tilbury-Matte-Revolution-Lipstick-2-53b89579141a4c68afe3592e16cb3ce9.jpg",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62d0e1ea742b5820fe824acd"
+  },
+  "name": "Wireless Headphones / Bluetooth Handset Headphones BT 5.0 earphones",
+  "quantity": 58,
+  "price": 350,
+  "imglinks": "https://ae01.alicdn.com/kf/H2ffab849b944463ab1d6b0c7e1d4e646S/Headphones-Bluetooth-Headset-Earphone-Wireless-Headphones-Stereo-Foldable-Sport-Earphone-Microphone-Headset-Handfree-MP3-Player.jpg_Q90.jpg_.webp",
+  "__v": 0
+}]
