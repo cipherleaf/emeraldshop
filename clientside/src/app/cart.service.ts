@@ -1,38 +1,52 @@
 import { Injectable } from '@angular/core';
-import { catchError, map, tap } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, BehaviorSubject, of } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
 import { Cart } from './cart';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
+  private cartsURL = 'http://localhost:3000/api/cart';
 
-  constructor(private http: HttpClient) { }
-  private cartsURL = 'http://localhost:3000/api/cart/'
+  // Create a reactive stream of carts
+  private cartsSubject = new BehaviorSubject<Cart[]>([]);
+  carts$ = this.cartsSubject.asObservable();
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
-  // Retrieving Carts Service
+  constructor(private readonly _http: HttpClient) { }
+
+  // Fetch all and push to the stream
   getCarts(): Observable<Cart[]> {
-    return this.http.get<Cart[]>(this.cartsURL);
+    return this._http.get<Cart[]>(this.cartsURL).pipe(
+      tap((carts) => this.cartsSubject.next(carts))
+    );
   }
 
+  // Add item and instantly append it to the live stream
   addCart(cart: Cart): Observable<Cart> {
-    return this.http.post<Cart>(this.cartsURL, cart, this.httpOptions).pipe(
-      tap((newCart: Cart) => this.log(`added to cart!`)),
+    return this._http.post<Cart>(this.cartsURL, cart, this.httpOptions).pipe(
+      tap((newCart: Cart) => {
+        const currentCarts = this.cartsSubject.value;
+        this.cartsSubject.next([...currentCarts, newCart]);
+      }),
       catchError(this.handleError<Cart>('addCart'))
     );
   }
 
-  // Deleting note through
-  deleteCart(_id: number): Observable<Cart> {
-    const url = `${this.cartsURL}${_id}`;
-
-    return this.http.delete<Cart>(url, this.httpOptions);
+  // Delete item and filter it out of the live stream
+  deleteCart(_id: number): Observable<any> {
+    const url = `${this.cartsURL}/${_id}`;
+    return this._http.delete(url, this.httpOptions).pipe(
+      tap(() => {
+        const currentCarts = this.cartsSubject.value;
+        this.cartsSubject.next(currentCarts.filter(cart => cart._id !== _id));
+      })
+    );
   }
 
   // Excerpt from the documentations.
@@ -45,20 +59,8 @@ export class CartService {
    */
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-
-      // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
-
-      // TODO: better job of transforming error for user consumption
-      this.log(`${operation} failed: ${error.message}`);
-
-      // Let the app keep running by returning an empty result.
+      console.error(error);
       return of(result as T);
     };
-  }
-
-  /** Log a HeroService message with the MessageService */
-  private log(message: string) {
-    console.log(message);
   }
 }

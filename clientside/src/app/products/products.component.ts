@@ -1,33 +1,39 @@
 import { Component, OnInit } from '@angular/core';
-
 import { ProductService } from '../product.service';
 import { Product } from '../product';
-
-import { CartsComponent } from '../carts/carts.component';
+import { CartService } from '../cart.service'; // Import CartService here
+import { Cart } from '../cart';
 
 @Component({
-  providers: [CartsComponent],
   selector: 'app-products',
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.css']
 })
 export class ProductsComponent implements OnInit {
   products!: Product[];
-  product!: Product;
-  name!: string;
-  stocks!: number;
-  price!: number;
-  imglinks!: string;
+  name: string = '';
+  stocks: number = 0;
+  price: number = 0;
+  imglinks: string = '';
 
-  constructor(private productService: ProductService, private comp: CartsComponent) { }
+  // Inject CartService instead of CartsComponent
+  constructor(
+    private productService: ProductService, 
+    private cartService: CartService
+  ) { }
 
-  callToCarts(name: string, stocks: number, price: number, imglinks: string): void {
-    this.comp.callFromProducts(name, stocks, price, imglinks);
+  callToCarts(name: string, quantity: number, price: number, imglinks: string): void {
+    const newCartItem = {
+      name,
+      quantity,
+      price,
+      imglinks
+    } as Cart;
+
+    this.cartService.addCart(newCartItem).subscribe(() => {
+      console.log('Added to cart and broadcasted successfully!');
+    });
   }
-
-  // callMe():void{
-    
-  // }
 
   ngOnInit(): void {
     this.getProducts();
@@ -47,14 +53,10 @@ export class ProductsComponent implements OnInit {
       .subscribe(product=>{
         this.products.push(product);
       });
-
-    this.getProducts();
   }
 
   deleteProduct(product: Product): void {
     this.products = this.products.filter((h) => h !== product);
     this.productService.deleteProduct(product._id).subscribe();
   }
-
-
 }

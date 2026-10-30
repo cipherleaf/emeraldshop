@@ -8,6 +8,7 @@ const Products = require('../models/products');
 // Retrieving all products
 router.get('/products', (req, res, next)=>{
 	Products.find(function(err, products){
+		console.info('PRODUCTS LIST ==>', JSON.stringify(products, null, 2))
 		res.json(products);
 	})
 });
@@ -43,7 +44,7 @@ router.post('/products', (req, res, next)=>{
 
 // Deleting products
 router.delete('/products/:id', (req, res, next)=>{
-	Products.remove({_id: req.params.id}, function(err, result){
+	Products.deleteOne({_id: req.params.id}, function(err, result){
 		if(err){
 			res.json(err);
 		}else{
@@ -62,26 +63,28 @@ router.get('/cart', (req, res, next)=>{
 });
 
 // Adding new products to cart
-router.post('/cart', (req, res, next)=>{
-	let newProductCart = new ProductCart({
-		name: req.body.name,
-		quantity: req.body.quantity,
-		price: req.body.price,
-		imglinks: req.body.imglinks
-	});
+router.post('/cart', (req, res, next) => {
+    let newProductCart = new ProductCart({
+        name: req.body.name,
+        quantity: req.body.quantity,
+        price: req.body.price,
+        imglinks: req.body.imglinks
+    });
 
-	newProductCart.save((err, cart)=>{
-		if(err){
-			res.json({msg: 'Failed to add to the cart!'+err});
-		}else{
-			res.json({msg: 'Product added to cart succesfully!'})
-		}
-	})
+    newProductCart.save((err, cart) => {
+        if (err) {
+            res.json({ msg: 'Failed to add to the cart!' + err });
+        } else {
+            // Return the actual saved document so frontend can render it
+			console.info('products added to card:', cart)
+            res.json(cart); 
+        }
+    });
 });
 
 // Removing products to the cart
 router.delete('/cart/:id', (req, res, next)=>{
-	ProductCart.remove({_id: req.params.id}, function(err, result){
+	ProductCart.deleteOne({_id: req.params.id}, function(err, result){
 		if(err){
 			res.json(err);
 		}else{
